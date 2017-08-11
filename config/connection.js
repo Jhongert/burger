@@ -9,7 +9,7 @@ if(process.env.JAWSDB_URL){
         user: "root",
         password: "jhon4bmd",
         port: '3306',
-        database: "moviePlannerDB"
+        database: "burgers_db"
     });
 };
 
