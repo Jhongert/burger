@@ -1,5 +1,11 @@
+// Dependencies
 var connection = require('./connection');
 
+/** Return a string of question marks to be used as placeholder in the insert query
+	Arguments: 
+	num: number of question marks
+	ex: num = 3 return ?,?,?
+*/
 function printQuestionMarks(num) {
 	var arr = [];
 	for (var i = 0; i < num; i++) {
@@ -8,29 +14,43 @@ function printQuestionMarks(num) {
 	return arr.toString();
 }
 
-/* Convert an object into a SET statement
-	example: object {id: 20} is converted to id = 20 
-	
+
+
+/* Prepare an object to be used into a SET statement
 	Arguments:
-	ob: Object to be converted
+	ob: Object to be prepare
+
+	Example
+	Passing this object as argument {"burger_name": "burger", "devour": true}
+	will return 
+	{ 
+	  fields: 'burger_name= ?,devour= ?',
+  	  values: [ 'burger', true ] 
+  	}
 */
+
 function objToSql(ob) {
-  	var arr = [];
+  	var obj = {};
+  	var fields = [];
+  	var values = [];
 
   	for (var key in ob) {
     	if (Object.hasOwnProperty.call(ob, key)) {
-      		arr.push(key + "=" + ob[key]);
+
+      		fields.push(key + "= ?");
+      		values.push(ob[key]);
    	 	}
   	}
-  	return arr.toString();
+  	obj.fields = fields.toString();
+  	obj.values = values;
+  	return obj;
 }
-
 
 var orm = {
 	/** Select all records from table
 		Arguments:
 		table: name of the table used in the query
-		callBack: this function is called whit the results, when the query is done
+		callBack: this function is called whit the result, when the query is done
 	*/
 	selectAll: function(table, callBack){
 		var query = 'SELECT * FROM ' + table;
@@ -42,6 +62,13 @@ var orm = {
 		});
 	},
 
+	/** Insert one record in the table
+		Arguments:
+		table: name of the table used in the query
+		fields: array of fields names of the table
+		values: array of values inserted in the table
+		callback: this function is called whit the result, when the query is done
+	*/
 	insertOne: function(table, fields, values, callBack){
 		var query = 'INSERT INTO ' + table + ' (';
 			query += fields.toString() + ') VALUES (';
@@ -55,21 +82,21 @@ var orm = {
 		 });
 	},
 
-	/* Method updateOne: It is used to update any table
-
+	/** Update one record in the table
 		Arguments: 
 		table: table to be updated
 		fieldsValues: Object containing field/value pairs, example {devour: true}
 		condition: WHERE statement, example id = 3
-		callBack: Function to executed when the query is done
+		callBack: this function is called whit the result, when the query is done
 	*/
 	updateOne: function(table, fieldsValues, condition, callBack){
-		var query = 'UPDATE ' + table + ' SET ';
-			query += objToSql(fieldsValues);
-			query += ' WHERE ' + condition;
-		console.log(query);
+		var fieldsValues = objToSql(fieldsValues);
 
-	    connection.query(query, function(err, result){
+		var query = 'UPDATE ' + table + ' SET ';
+			query += fieldsValues.fields;
+			query += ' WHERE ' + condition;
+
+	    connection.query(query, fieldsValues.values, function(err, result){
 		 	if(err) throw err
 
 		  	callBack(result);

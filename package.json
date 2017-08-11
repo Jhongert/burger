@@ -1,10 +1,11 @@
 {
   "name": "burger",
   "version": "1.0.0",
-  "description": "",
+  "description": "### Demo [heroku](https://thawing-scrubland-65973.herokuapp.com/)",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -18,10 +19,10 @@
   "homepage": "https://github.com/Jhongert/burger#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
-    "espress": "0.0.0",
     "express": "^4.15.3",
     "express-handlebars": "^3.0.0",
     "method-override": "^2.3.9",
     "mysql": "^2.14.1"
-  }
+  },
+  "devDependencies": {}
 }
