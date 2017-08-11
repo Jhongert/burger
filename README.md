@@ -9,7 +9,7 @@ A full stack burger-logger app. On the server side this app uses Node and MySQL 
 - Each burger in the waiting area also has a Devour it! button. When the user clicks it, the burger will move to the right side of the page.
 
 ## Demo
-[heroku](https://thawing-scrubland-65973.herokuapp.com/)
+[See app in action](https://thawing-scrubland-65973.herokuapp.com/)
 
 ## Author
 Jhongert Fuertes
