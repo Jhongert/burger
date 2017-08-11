@@ -1,9 +1,15 @@
+// Dependencies
 var express = require('express');
 var burger = require('../models/burger');
 
+//Create all our routes
 var router = express.Router();
 
 router.get('/', function(req, res){
+	res.redirect("index");
+});
+
+router.get('/index', function(req, res){
 	burger.selectBurgers(function(data){
 		res.render("index", { burgers: data });
 	});
@@ -23,4 +29,5 @@ router.put('/burgers/updateBurger/:id', function(req, res){
 	});
 });
 
+// Export router
 module.exports = router;

@@ -26,6 +26,11 @@ app.use(express.static(__dirname + '/public'));
 // Router
 app.use('/', require('./controllers/burgers_controller'));
 
+// Handle 404
+app.use(function(req, res) {
+     res.render('404');
+});
+
 app.listen(PORT, function() {
   console.log("App listening on PORT " + PORT);
 });
