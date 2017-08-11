@@ -1,9 +1,14 @@
+// Dependencies
 var mysql = require("mysql");
+
 var connection;
 
+// Create connection.
 if(process.env.JAWSDB_URL){
+    // Heroku
     connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
+    // Local host
     var connection = mysql.createConnection({
         host: "localhost",
         user: "root",
@@ -13,13 +18,13 @@ if(process.env.JAWSDB_URL){
     });
 };
 
+// Connect to database
 connection.connect(function(err) {
     if (err) {
         console.error("error connecting: " + err.stack);
         return;
     }
-
-    console.log("connected as id " + connection.threadId);
 });
 
+// Export connection
 module.exports = connection;
